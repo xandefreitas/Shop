@@ -11,7 +11,10 @@ class ProductsOverviewPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Minha Loja'),
+        title: Text(
+          'Minha Loja',
+          style: TextStyle(fontFamily: 'Lato'),
+        ),
         centerTitle: true,
       ),
       body: GridView.builder(
