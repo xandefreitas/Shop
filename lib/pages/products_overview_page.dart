@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_shop/components/product_item.dart';
 import 'package:flutter_shop/data/dummy_data.dart';
 import 'package:flutter_shop/model/product.dart';
 
@@ -21,7 +22,7 @@ class ProductsOverviewPage extends StatelessWidget {
         ),
         itemBuilder: (ctx, i) => Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Text(loadedProducts[i].title),
+          child: ProductItem(product: loadedProducts[i]),
         ),
       ),
     );
