@@ -8,12 +8,18 @@ enum FilterOptions {
   ALL,
 }
 
-class ProductsOverviewPage extends StatelessWidget {
+class ProductsOverviewPage extends StatefulWidget {
   ProductsOverviewPage({Key? key}) : super(key: key);
 
   @override
+  State<ProductsOverviewPage> createState() => _ProductsOverviewPageState();
+}
+
+class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
+  bool _showFavoriteOnly = false;
+
+  @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<ProductList>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -34,16 +40,20 @@ class ProductsOverviewPage extends StatelessWidget {
             ],
             onSelected: (selectedValue) {
               if (selectedValue == FilterOptions.FAVORITE) {
-                provider.showFavoriteOnly();
+                setState(() {
+                  _showFavoriteOnly = true;
+                });
               } else {
-                provider.showAll();
+                setState(() {
+                  _showFavoriteOnly = false;
+                });
               }
             },
           ),
         ],
         centerTitle: true,
       ),
-      body: ProductGrid(),
+      body: ProductGrid(showFavoriteOnly: _showFavoriteOnly),
     );
   }
 }
