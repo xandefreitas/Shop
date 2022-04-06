@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_shop/components/badge.dart';
 import 'package:flutter_shop/components/product_grid.dart';
+import 'package:flutter_shop/model/cart.dart';
 import 'package:flutter_shop/model/product_list.dart';
 import 'package:provider/provider.dart';
 
@@ -50,6 +52,16 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
               }
             },
           ),
+          Consumer<Cart>(
+            child: IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.shopping_cart),
+            ),
+            builder: (ctx, cart, child) => Badge(
+              value: cart.itemsCount.toString(),
+              child: child!,
+            ),
+          )
         ],
         centerTitle: true,
       ),
