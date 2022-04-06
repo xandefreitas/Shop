@@ -3,6 +3,7 @@ import 'package:flutter_shop/components/badge.dart';
 import 'package:flutter_shop/components/product_grid.dart';
 import 'package:flutter_shop/model/cart.dart';
 import 'package:flutter_shop/model/product_list.dart';
+import 'package:flutter_shop/utils/app,_routes.dart';
 import 'package:provider/provider.dart';
 
 enum FilterOptions {
@@ -54,7 +55,7 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
           ),
           Consumer<Cart>(
             child: IconButton(
-              onPressed: () {},
+              onPressed: () => Navigator.pushNamed(context, AppRoutes.CART),
               icon: Icon(Icons.shopping_cart),
             ),
             builder: (ctx, cart, child) => Badge(
