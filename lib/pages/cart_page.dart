@@ -42,7 +42,7 @@ class CartPage extends StatelessWidget {
                   Spacer(),
                   TextButton(
                     onPressed: () {
-                      Provider.of<OrderList>(context).addOrder(cart);
+                      Provider.of<OrderList>(context, listen: false).addOrder(cart);
                       cart.clear();
                     },
                     style: TextButton.styleFrom(
