@@ -1,0 +1,34 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_shop/model/product.dart';
+
+class ProductItem extends StatelessWidget {
+  final Product product;
+  const ProductItem({
+    Key? key,
+    required this.product,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: CircleAvatar(backgroundImage: NetworkImage(product.imageUrl)),
+      title: Text(product.name),
+      trailing: Container(
+        width: 100,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            IconButton(
+              icon: Icon(Icons.edit),
+              onPressed: () {},
+            ),
+            IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {},
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

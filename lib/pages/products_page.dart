@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_shop/components/app_drawer.dart';
+import 'package:flutter_shop/components/product_item.dart';
 import 'package:flutter_shop/model/product_list.dart';
 import 'package:provider/provider.dart';
 
@@ -16,7 +17,14 @@ class ProductsPage extends StatelessWidget {
         padding: EdgeInsets.all(8),
         child: ListView.builder(
           itemCount: products.itemsCount,
-          itemBuilder: (ctx, i) => Text(products.items[i].name),
+          itemBuilder: (ctx, i) => Column(
+            children: [
+              ProductItem(
+                product: products.items[i],
+              ),
+              Divider(),
+            ],
+          ),
         ),
       ),
     );

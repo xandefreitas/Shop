@@ -4,9 +4,9 @@ import 'package:flutter_shop/model/product.dart';
 import 'package:flutter_shop/model/product_list.dart';
 import 'package:provider/provider.dart';
 
-class ProductGridItem extends StatelessWidget {
+class ProductGrid extends StatelessWidget {
   final bool showFavoriteOnly;
-  const ProductGridItem({
+  const ProductGrid({
     Key? key,
     required this.showFavoriteOnly,
   }) : super(key: key);
@@ -26,7 +26,7 @@ class ProductGridItem extends StatelessWidget {
         value: loadedProducts[i],
         child: const Padding(
           padding: EdgeInsets.all(8.0),
-          child: ProductItem(),
+          child: ProductGridItem(),
         ),
       ),
     );
