@@ -67,7 +67,7 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
         ],
         centerTitle: true,
       ),
-      body: ProductGrid(showFavoriteOnly: _showFavoriteOnly),
+      body: ProductGridItem(showFavoriteOnly: _showFavoriteOnly),
       drawer: AppDrawer(),
     );
   }

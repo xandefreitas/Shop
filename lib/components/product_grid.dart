@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_shop/components/product_item.dart';
+import 'package:flutter_shop/components/product_grid_item.dart';
 import 'package:flutter_shop/model/product.dart';
 import 'package:flutter_shop/model/product_list.dart';
 import 'package:provider/provider.dart';
 
-class ProductGrid extends StatelessWidget {
+class ProductGridItem extends StatelessWidget {
   final bool showFavoriteOnly;
-  const ProductGrid({
+  const ProductGridItem({
     Key? key,
     required this.showFavoriteOnly,
   }) : super(key: key);
