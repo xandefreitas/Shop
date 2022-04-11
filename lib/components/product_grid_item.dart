@@ -45,10 +45,11 @@ class ProductItem extends StatelessWidget {
           trailing: IconButton(
             icon: Icon(Icons.shopping_cart),
             onPressed: () {
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text('Produto adicionado com sucesso!'),
-                  duration: Duration(seconds: 2),
+                  duration: Duration(seconds: 3),
                   action: SnackBarAction(
                     label: 'DESFAZER',
                     onPressed: () => cart.removeSingleItem(product.id),
