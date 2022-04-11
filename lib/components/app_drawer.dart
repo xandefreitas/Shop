@@ -12,7 +12,6 @@ class AppDrawer extends StatelessWidget {
           AppBar(
             title: Text('Bem Vindo Usuário'),
           ),
-          Divider(),
           ListTile(
             leading: Icon(Icons.shopping_bag_outlined),
             title: Text('Loja'),
@@ -23,6 +22,12 @@ class AppDrawer extends StatelessWidget {
             leading: Icon(Icons.payment),
             title: Text('Pedidos'),
             onTap: () => Navigator.pushReplacementNamed(context, AppRoutes.ORDERS),
+          ),
+          Divider(),
+          ListTile(
+            leading: Icon(Icons.edit),
+            title: Text('Gerenciar Produtos'),
+            onTap: () => Navigator.pushReplacementNamed(context, AppRoutes.PRODUCTS),
           ),
         ],
       ),
