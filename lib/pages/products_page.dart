@@ -11,7 +11,7 @@ class ProductsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final ProductList products = Provider.of(context);
     return Scaffold(
-      appBar: AppBar(title: Text('')),
+      appBar: AppBar(title: Text('Gerenciar Produtos')),
       drawer: AppDrawer(),
       body: Padding(
         padding: EdgeInsets.all(8),
