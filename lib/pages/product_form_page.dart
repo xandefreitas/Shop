@@ -55,6 +55,22 @@ class _ProductFormPageState extends State<ProductFormPage> {
     );
   }
 
+  bool isValidImageUrl(String url) {
+    bool isValidUrl = Uri.tryParse(url)?.hasAbsolutePath ?? false;
+    bool endsWithFile = url.toLowerCase().endsWith('.png') || url.toLowerCase().endsWith('.jpg') || url.toLowerCase().endsWith('.jpeg');
+    return isValidUrl && endsWithFile;
+  }
+
+  textFieldValidator(String text, int minLength) {
+    if (text.trim().isEmpty) {
+      return 'Campo Obrigatório.';
+    }
+    if (text.trim().length < minLength) {
+      return 'Campo precisa no mínimo de $minLength caracteres.';
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,16 +94,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                 textInputAction: TextInputAction.next,
                 onFieldSubmitted: (_) => FocusScope.of(context).requestFocus(_priceFocus),
                 onSaved: (name) => _formData['name'] = name ?? '',
-                validator: (_name) {
-                  final name = _name ?? '';
-                  if (name.trim().isEmpty) {
-                    return 'Nome é Obrigatório.';
-                  }
-                  if (name.trim().length < 3) {
-                    return 'Nome precisa no mínimo de 3 letras.';
-                  }
-                  return null;
-                },
+                validator: (_name) => textFieldValidator(_name ?? '', 3),
               ),
               TextFormField(
                 focusNode: _priceFocus,
@@ -96,6 +103,15 @@ class _ProductFormPageState extends State<ProductFormPage> {
                 textInputAction: TextInputAction.next,
                 onFieldSubmitted: (_) => FocusScope.of(context).requestFocus(_descriptionFocus),
                 onSaved: (price) => _formData['price'] = double.parse(price ?? '0'),
+                validator: (_price) {
+                  final priceString = _price ?? '-1';
+                  final price = double.tryParse(priceString) ?? -1;
+
+                  if (price <= 0) {
+                    return 'Informe um preço válido.';
+                  }
+                  return null;
+                },
               ),
               TextFormField(
                 focusNode: _descriptionFocus,
@@ -103,6 +119,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                 keyboardType: TextInputType.multiline,
                 maxLines: 3,
                 onSaved: (description) => _formData['description'] = description ?? '',
+                validator: (_description) => textFieldValidator(_description ?? '', 10),
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -116,6 +133,13 @@ class _ProductFormPageState extends State<ProductFormPage> {
                       controller: _imageUrlController,
                       onFieldSubmitted: (_) => _submitForm(),
                       onSaved: (imageUrl) => _formData['imageUrl'] = imageUrl ?? '',
+                      validator: (_imageUrl) {
+                        final imageUrl = _imageUrl ?? '';
+                        if (!isValidImageUrl(imageUrl)) {
+                          return 'Informe uma Url válida!';
+                        }
+                        return null;
+                      },
                     ),
                   ),
                   Container(
