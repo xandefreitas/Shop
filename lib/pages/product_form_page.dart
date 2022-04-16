@@ -1,7 +1,6 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_shop/model/product.dart';
+import 'package:flutter_shop/model/product_list.dart';
+import 'package:provider/provider.dart';
 
 class ProductFormPage extends StatefulWidget {
   const ProductFormPage({Key? key}) : super(key: key);
@@ -18,7 +17,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
 
   final _formKey = GlobalKey<FormState>();
 
-  final _formData = Map<String, Object>();
+  final _formData = <String, Object>{};
 
   @override
   void initState() {
@@ -37,7 +36,6 @@ class _ProductFormPageState extends State<ProductFormPage> {
 
   void updateImage() {
     setState(() {});
-    print('update Image...');
   }
 
   void _submitForm() {
@@ -46,13 +44,9 @@ class _ProductFormPageState extends State<ProductFormPage> {
       return;
     }
     _formKey.currentState?.save();
-    final newProduct = Product(
-      id: Random().nextDouble().toString(),
-      name: _formData['name'] as String,
-      description: _formData['description'] as String,
-      imageUrl: _formData['imageUrl'] as String,
-      price: _formData['price'] as double,
-    );
+
+    Provider.of<ProductList>(context, listen: false).addProductFromData(_formData);
+    Navigator.pop(context);
   }
 
   bool isValidImageUrl(String url) {
@@ -152,7 +146,6 @@ class _ProductFormPageState extends State<ProductFormPage> {
                         width: 1,
                       ),
                     ),
-                    // alignment: Alignment.center,
                     child: _imageUrlController.text.isEmpty
                         ? Center(child: Text('Informe a Url'))
                         : Image.network(
