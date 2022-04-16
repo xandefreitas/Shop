@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_shop/model/product.dart';
 import 'package:flutter_shop/model/product_list.dart';
 import 'package:provider/provider.dart';
 
@@ -26,6 +27,24 @@ class _ProductFormPageState extends State<ProductFormPage> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_formData.isEmpty) {
+      final arguments = ModalRoute.of(context)?.settings.arguments;
+      if (arguments != null) {
+        final product = arguments as Product;
+        _formData['id'] = product.id;
+        _formData['name'] = product.name;
+        _formData['price'] = product.price;
+        _formData['description'] = product.description;
+        _formData['imageUrl'] = product.imageUrl;
+
+        _imageUrlController.text = product.imageUrl;
+      }
+    }
+  }
+
+  @override
   void dispose() {
     _priceFocus.dispose();
     _descriptionFocus.dispose();
@@ -45,7 +64,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
     }
     _formKey.currentState?.save();
 
-    Provider.of<ProductList>(context, listen: false).addProductFromData(_formData);
+    Provider.of<ProductList>(context, listen: false).saveProduct(_formData);
     Navigator.pop(context);
   }
 
@@ -86,6 +105,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
               TextFormField(
                 decoration: InputDecoration(labelText: 'Nome'),
                 textInputAction: TextInputAction.next,
+                initialValue: _formData['name']?.toString(),
                 onFieldSubmitted: (_) => FocusScope.of(context).requestFocus(_priceFocus),
                 onSaved: (name) => _formData['name'] = name ?? '',
                 validator: (_name) => textFieldValidator(_name ?? '', 3),
@@ -95,6 +115,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                 decoration: InputDecoration(labelText: 'Preço'),
                 keyboardType: TextInputType.numberWithOptions(decimal: true),
                 textInputAction: TextInputAction.next,
+                initialValue: _formData['price']?.toString(),
                 onFieldSubmitted: (_) => FocusScope.of(context).requestFocus(_descriptionFocus),
                 onSaved: (price) => _formData['price'] = double.parse(price ?? '0'),
                 validator: (_price) {
@@ -112,6 +133,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                 decoration: InputDecoration(labelText: 'Descrição'),
                 keyboardType: TextInputType.multiline,
                 maxLines: 3,
+                initialValue: _formData['description']?.toString(),
                 onSaved: (description) => _formData['description'] = description ?? '',
                 validator: (_description) => textFieldValidator(_description ?? '', 10),
               ),
