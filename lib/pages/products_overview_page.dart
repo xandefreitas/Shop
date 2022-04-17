@@ -43,15 +43,13 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
               ),
             ],
             onSelected: (selectedValue) {
-              if (selectedValue == FilterOptions.FAVORITE) {
-                setState(() {
+              setState(() {
+                if (selectedValue == FilterOptions.FAVORITE) {
                   _showFavoriteOnly = true;
-                });
-              } else {
-                setState(() {
+                } else {
                   _showFavoriteOnly = false;
-                });
-              }
+                }
+              });
             },
           ),
           Consumer<Cart>(
