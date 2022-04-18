@@ -66,7 +66,21 @@ class _ProductFormPageState extends State<ProductFormPage> {
     }
     _formKey.currentState?.save();
     setState(() => isLoading = true);
-    Provider.of<ProductList>(context, listen: false).saveProduct(_formData).then((value) {
+    Provider.of<ProductList>(context, listen: false).saveProduct(_formData).catchError((error) {
+      return showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: Text('Ocorreu um erro!'),
+          content: Text('Ocorreu um erro ao tentar salvar o produto.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('Ok'),
+            ),
+          ],
+        ),
+      );
+    }).then((value) {
       setState(() => isLoading = false);
       Navigator.pop(context);
     });
