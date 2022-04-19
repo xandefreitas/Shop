@@ -59,15 +59,18 @@ class _ProductFormPageState extends State<ProductFormPage> {
     setState(() {});
   }
 
-  void _submitForm() {
+  Future<void> _submitForm() async {
     final isValid = _formKey.currentState?.validate() ?? false;
     if (!isValid) {
       return;
     }
     _formKey.currentState?.save();
     setState(() => isLoading = true);
-    Provider.of<ProductList>(context, listen: false).saveProduct(_formData).catchError((error) {
-      return showDialog(
+    try {
+      await Provider.of<ProductList>(context, listen: false).saveProduct(_formData);
+      Navigator.pop(context);
+    } catch (error) {
+      await showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
           title: Text('Ocorreu um erro!'),
@@ -80,10 +83,9 @@ class _ProductFormPageState extends State<ProductFormPage> {
           ],
         ),
       );
-    }).then((value) {
+    } finally {
       setState(() => isLoading = false);
-      Navigator.pop(context);
-    });
+    }
   }
 
   bool isValidImageUrl(String url) {
