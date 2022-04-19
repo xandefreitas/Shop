@@ -3,6 +3,7 @@ import 'package:flutter_shop/components/app_drawer.dart';
 import 'package:flutter_shop/components/badge.dart';
 import 'package:flutter_shop/components/product_grid.dart';
 import 'package:flutter_shop/model/cart.dart';
+import 'package:flutter_shop/model/product.dart';
 import 'package:flutter_shop/model/product_list.dart';
 import 'package:flutter_shop/utils/app,_routes.dart';
 import 'package:provider/provider.dart';
@@ -21,10 +22,15 @@ class ProductsOverviewPage extends StatefulWidget {
 
 class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
   bool _showFavoriteOnly = false;
+  bool _isLoading = true;
 
   @override
   void initState() {
-    Provider.of<ProductList>(context, listen: false).loadProducts();
+    Provider.of<ProductList>(context, listen: false).loadProducts().then((value) {
+      setState(() {
+        _isLoading = false;
+      });
+    });
     super.initState();
   }
 
@@ -71,7 +77,7 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
         ],
         centerTitle: true,
       ),
-      body: ProductGrid(showFavoriteOnly: _showFavoriteOnly),
+      body: _isLoading ? Center(child: CircularProgressIndicator()) : ProductGrid(showFavoriteOnly: _showFavoriteOnly),
       drawer: AppDrawer(),
     );
   }

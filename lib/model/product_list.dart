@@ -7,7 +7,7 @@ import 'package:flutter_shop/model/product.dart';
 import 'package:http/http.dart' as http;
 
 class ProductList with ChangeNotifier {
-  final List<Product> _items = dummyProducts;
+  final List<Product> _items = [];
   final _url = 'https://cod3r-shop-app-default-rtdb.firebaseio.com/products.json';
 
   Future<void> addProduct(Product product) async {
@@ -40,6 +40,21 @@ class ProductList with ChangeNotifier {
 
   Future<void> loadProducts() async {
     final response = await http.get(Uri.parse(_url));
+    if (response.body == 'null') return;
+    Map<String, dynamic> data = jsonDecode(response.body);
+    data.forEach(
+      (id, data) => _items.add(
+        Product(
+          id: id,
+          name: data['name'],
+          description: data['description'],
+          imageUrl: data['imageUrl'],
+          price: data['price'],
+          isFavorite: data['isFavorite'],
+        ),
+      ),
+    );
+    notifyListeners();
   }
 
   Future<void> saveProduct(Map<String, Object> data) {
