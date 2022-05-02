@@ -11,6 +11,7 @@ class ProductGridItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final product = Provider.of<Product>(context, listen: false);
     final cart = Provider.of<Cart>(context, listen: false);
+    final message = ScaffoldMessenger.of(context);
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(15),
@@ -29,8 +30,32 @@ class ProductGridItem extends StatelessWidget {
           backgroundColor: Colors.black87,
           leading: Consumer<Product>(
             builder: (ctx, product, _) => IconButton(
-              onPressed: () {
-                product.toggleFavorite();
+              onPressed: () async {
+                try {
+                  await product.toggleFavorite();
+                  if (product.isFavorite) {
+                    message.hideCurrentSnackBar();
+                    message.showSnackBar(
+                      SnackBar(
+                        content: Text('Produto adicionado aos favoritos!'),
+                        duration: Duration(seconds: 3),
+                        action: SnackBarAction(
+                          label: 'DESFAZER',
+                          onPressed: () => product.toggleFavorite(),
+                        ),
+                      ),
+                    );
+                  }
+                } catch (e) {
+                  message.hideCurrentSnackBar();
+                  message.showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        e.toString(),
+                      ),
+                    ),
+                  );
+                }
               },
               icon: Icon(
                 product.isFavorite ? Icons.favorite : Icons.favorite_border,
@@ -45,8 +70,8 @@ class ProductGridItem extends StatelessWidget {
           trailing: IconButton(
             icon: Icon(Icons.shopping_cart),
             onPressed: () {
-              ScaffoldMessenger.of(context).hideCurrentSnackBar();
-              ScaffoldMessenger.of(context).showSnackBar(
+              message.hideCurrentSnackBar();
+              message.showSnackBar(
                 SnackBar(
                   content: Text('Produto adicionado com sucesso!'),
                   duration: Duration(seconds: 3),

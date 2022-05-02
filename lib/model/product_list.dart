@@ -4,11 +4,12 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_shop/exceptions/http_exception.dart';
 import 'package:flutter_shop/model/product.dart';
+import 'package:flutter_shop/utils/constants.dart';
 import 'package:http/http.dart' as http;
 
 class ProductList with ChangeNotifier {
   final List<Product> _items = [];
-  final _baseUrl = 'https://cod3r-shop-app-default-rtdb.firebaseio.com/products';
+  final _baseUrl = Constants.PRODUCT_BASE_URL;
 
   Future<void> addProduct(Product product) async {
     final response = await http.post(
