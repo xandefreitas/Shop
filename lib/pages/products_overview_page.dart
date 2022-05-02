@@ -38,18 +38,18 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Minha Loja',
           style: TextStyle(fontFamily: 'Lato'),
         ),
         actions: [
           PopupMenuButton(
             itemBuilder: (_) => [
-              PopupMenuItem(
+              const PopupMenuItem(
                 child: Text('Somente Favoritos'),
                 value: FilterOptions.FAVORITE,
               ),
-              PopupMenuItem(
+              const PopupMenuItem(
                 child: Text('Todos'),
                 value: FilterOptions.ALL,
               ),
@@ -67,7 +67,7 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
           Consumer<Cart>(
             child: IconButton(
               onPressed: () => Navigator.pushNamed(context, AppRoutes.CART),
-              icon: Icon(Icons.shopping_cart),
+              icon: const Icon(Icons.shopping_cart),
             ),
             builder: (ctx, cart, child) => Badge(
               value: cart.itemsCount.toString(),
