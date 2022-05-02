@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_shop/exceptions/http_exception.dart';
 import 'package:flutter_shop/model/product.dart';
 import 'package:http/http.dart' as http;
 
@@ -94,7 +95,7 @@ class ProductList with ChangeNotifier {
     }
   }
 
-  void removeProduct(Product product) async {
+  Future<void> removeProduct(Product product) async {
     int index = _items.indexWhere((element) => element.id == product.id);
 
     if (index >= 0) {
@@ -106,6 +107,10 @@ class ProductList with ChangeNotifier {
       if (response.statusCode >= 400) {
         _items.insert(index, product);
         notifyListeners();
+        throw HttpException(
+          message: 'Não foi possível excluir o produto',
+          statusCode: response.statusCode,
+        );
       }
     }
   }
