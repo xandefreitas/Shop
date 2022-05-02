@@ -15,10 +15,10 @@ class _OrderWidgetState extends State<OrderWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Card(
-          child: ListTile(
+    return Card(
+      child: Column(
+        children: [
+          ListTile(
             title: Text(
               'R\$ ${widget.order.total.toStringAsFixed(2)}',
             ),
@@ -34,29 +34,29 @@ class _OrderWidgetState extends State<OrderWidget> {
               },
             ),
           ),
-        ),
-        if (_expanded)
-          Container(
-            height: (widget.order.products.length * 24.0) + 8,
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-            child: ListView(
-                children: widget.order.products
-                    .map((product) => Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              product.name,
-                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              '${product.quantity}x R\$ ${product.price}',
-                              style: TextStyle(fontSize: 18, color: Colors.grey),
-                            )
-                          ],
-                        ))
-                    .toList()),
-          ),
-      ],
+          if (_expanded)
+            Container(
+              height: (widget.order.products.length * 24.0) + 8,
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+              child: ListView(
+                  children: widget.order.products
+                      .map((product) => Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                product.name,
+                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                '${product.quantity}x R\$ ${product.price}',
+                                style: TextStyle(fontSize: 18, color: Colors.grey),
+                              )
+                            ],
+                          ))
+                      .toList()),
+            ),
+        ],
+      ),
     );
   }
 }
