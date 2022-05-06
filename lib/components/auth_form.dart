@@ -11,6 +11,8 @@ class AuthForm extends StatefulWidget {
 
 class _AuthFormState extends State<AuthForm> {
   final _passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  bool _isLoading = false;
   AuthMode _authMode = AuthMode.LOGIN;
   Map<String, String> _authData = {
     'email': '',
@@ -27,9 +29,10 @@ class _AuthFormState extends State<AuthForm> {
       elevation: 8,
       child: Container(
         padding: EdgeInsets.all(16),
-        height: 320,
+        height: _isLogin ? 320 : 400,
         width: deviceSize.width * 0.75,
         child: Form(
+          key: _formKey,
           child: Column(
             children: [
               TextFormField(
@@ -58,12 +61,12 @@ class _AuthFormState extends State<AuthForm> {
                   return null;
                 },
               ),
-              if (_authMode == AuthMode.SIGNUP)
+              if (_isSignup)
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Confirmar Senha'),
                   keyboardType: TextInputType.emailAddress,
                   obscureText: true,
-                  validator: _authMode == AuthMode.LOGIN
+                  validator: _isLogin
                       ? null
                       : (_password) {
                           final password = _password ?? '';
@@ -74,15 +77,22 @@ class _AuthFormState extends State<AuthForm> {
                         },
                 ),
               SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: _submit,
-                child: Text(_authMode == AuthMode.LOGIN ? 'ENTRAR' : 'REGISTRAR'),
-                style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
+              _isLoading
+                  ? CircularProgressIndicator()
+                  : ElevatedButton(
+                      onPressed: _submit,
+                      child: Text(_isLogin ? 'ENTRAR' : 'REGISTRAR'),
+                      style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          padding: EdgeInsets.symmetric(horizontal: 32, vertical: 8)),
                     ),
-                    padding: EdgeInsets.symmetric(horizontal: 32, vertical: 8)),
-              ),
+              Spacer(),
+              TextButton(
+                onPressed: _switchAuthMode,
+                child: Text(_isLogin ? 'DESEJA REGISTRAR?' : 'JÁ POSSUI CONTA?'),
+              )
             ],
           ),
         ),
@@ -90,5 +100,31 @@ class _AuthFormState extends State<AuthForm> {
     );
   }
 
-  _submit() {}
+  _submit() {
+    final isValid = _formKey.currentState?.validate() ?? false;
+
+    if (!isValid) {
+      return;
+    }
+    setState(() => _isLoading = true);
+
+    _formKey.currentState?.save();
+
+    if (_isLogin) {
+      //login
+    } else {
+      //register
+    }
+
+    setState(() => _isLoading = false);
+  }
+
+  _switchAuthMode() {
+    setState(() {
+      _isLogin ? _authMode = AuthMode.SIGNUP : _authMode = AuthMode.LOGIN;
+    });
+  }
+
+  bool get _isLogin => _authMode == AuthMode.LOGIN;
+  bool get _isSignup => !_isLogin;
 }
