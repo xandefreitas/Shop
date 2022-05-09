@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_shop/model/auth.dart';
 import 'package:flutter_shop/model/cart.dart';
 import 'package:flutter_shop/model/product.dart';
 import 'package:flutter_shop/utils/app,_routes.dart';
@@ -12,6 +13,7 @@ class ProductGridItem extends StatelessWidget {
     final product = Provider.of<Product>(context, listen: false);
     final cart = Provider.of<Cart>(context, listen: false);
     final message = ScaffoldMessenger.of(context);
+    final auth = Provider.of<Auth>(context, listen: false);
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(15),
@@ -32,7 +34,7 @@ class ProductGridItem extends StatelessWidget {
             builder: (ctx, product, _) => IconButton(
               onPressed: () async {
                 try {
-                  await product.toggleFavorite();
+                  await product.toggleFavorite(auth.token ?? '');
                   if (product.isFavorite) {
                     message.hideCurrentSnackBar();
                     message.showSnackBar(
@@ -41,7 +43,7 @@ class ProductGridItem extends StatelessWidget {
                         duration: Duration(seconds: 3),
                         action: SnackBarAction(
                           label: 'DESFAZER',
-                          onPressed: () => product.toggleFavorite(),
+                          onPressed: () => product.toggleFavorite(auth.token ?? ''),
                         ),
                       ),
                     );

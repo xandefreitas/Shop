@@ -8,7 +8,7 @@ import 'package:flutter_shop/utils/constants.dart';
 import 'package:http/http.dart' as http;
 
 class ProductList with ChangeNotifier {
-  String _token;
+  final String _token;
   List<Product> _items = [];
 
   ProductList(this._token, this._items);
@@ -17,7 +17,7 @@ class ProductList with ChangeNotifier {
 
   Future<void> addProduct(Product product) async {
     final response = await http.post(
-      Uri.parse('$_baseUrl/products.json'),
+      Uri.parse('$_baseUrl/products.json?auth=$_token'),
       body: jsonEncode(
         {
           "name": product.name,
@@ -85,7 +85,7 @@ class ProductList with ChangeNotifier {
 
     if (index >= 0) {
       await http.patch(
-        Uri.parse('$_baseUrl/products/${product.id}.json'),
+        Uri.parse('$_baseUrl/products/${product.id}.json?auth=$_token'),
         body: jsonEncode(
           {
             "name": product.name,
@@ -107,7 +107,7 @@ class ProductList with ChangeNotifier {
       final product = _items[index];
       _items.remove(product);
       notifyListeners();
-      final response = await http.delete(Uri.parse('$_baseUrl/products/${product.id}.json'));
+      final response = await http.delete(Uri.parse('$_baseUrl/products/${product.id}.json?auth=$_token'));
 
       if (response.statusCode >= 400) {
         _items.insert(index, product);
