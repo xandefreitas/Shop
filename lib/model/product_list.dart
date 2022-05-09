@@ -8,7 +8,11 @@ import 'package:flutter_shop/utils/constants.dart';
 import 'package:http/http.dart' as http;
 
 class ProductList with ChangeNotifier {
-  final List<Product> _items = [];
+  String _token;
+  List<Product> _items = [];
+
+  ProductList(this._token, this._items);
+
   final _baseUrl = Constants.PRODUCT_BASE_URL;
 
   Future<void> addProduct(Product product) async {
@@ -41,7 +45,7 @@ class ProductList with ChangeNotifier {
 
   Future<void> loadProducts() async {
     _items.clear();
-    final response = await http.get(Uri.parse('$_baseUrl/products.json'));
+    final response = await http.get(Uri.parse('$_baseUrl/products.json?auth=$_token'));
     if (response.body == 'null') return;
     Map<String, dynamic> data = jsonDecode(response.body);
     data.forEach(
