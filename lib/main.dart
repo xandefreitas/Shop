@@ -13,6 +13,8 @@ import 'package:flutter_shop/pages/products_overview_page.dart';
 import 'package:flutter_shop/utils/app,_routes.dart';
 import 'package:provider/provider.dart';
 
+import 'pages/auth_or_home_page.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -55,8 +57,7 @@ class MyApp extends StatelessWidget {
               ),
         ),
         routes: {
-          AppRoutes.AUTH: (ctx) => AuthPage(),
-          AppRoutes.HOME: (ctx) => ProductsOverviewPage(),
+          AppRoutes.AUTH_OR_HOME: (ctx) => AuthOrHomePage(),
           AppRoutes.PRODUCT_DETAIL: (ctx) => const ProductDetailPage(),
           AppRoutes.CART: (ctx) => const CartPage(),
           AppRoutes.ORDERS: (ctx) => const OrdersPage(),

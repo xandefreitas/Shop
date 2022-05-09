@@ -15,7 +15,7 @@ class AppDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.shopping_bag_outlined),
             title: Text('Loja'),
-            onTap: () => Navigator.pushReplacementNamed(context, AppRoutes.HOME),
+            onTap: () => Navigator.pushReplacementNamed(context, AppRoutes.AUTH_OR_HOME),
           ),
           Divider(),
           ListTile(
