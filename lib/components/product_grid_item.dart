@@ -34,7 +34,7 @@ class ProductGridItem extends StatelessWidget {
             builder: (ctx, product, _) => IconButton(
               onPressed: () async {
                 try {
-                  await product.toggleFavorite(auth.token ?? '');
+                  await product.toggleFavorite(auth.token ?? '', auth.userId ?? '');
                   if (product.isFavorite) {
                     message.hideCurrentSnackBar();
                     message.showSnackBar(
@@ -43,7 +43,10 @@ class ProductGridItem extends StatelessWidget {
                         duration: Duration(seconds: 3),
                         action: SnackBarAction(
                           label: 'DESFAZER',
-                          onPressed: () => product.toggleFavorite(auth.token ?? ''),
+                          onPressed: () => product.toggleFavorite(
+                            auth.token ?? '',
+                            auth.userId ?? '',
+                          ),
                         ),
                       ),
                     );
