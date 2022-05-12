@@ -8,16 +8,21 @@ import 'package:flutter_shop/utils/constants.dart';
 import 'package:http/http.dart' as http;
 
 class ProductList with ChangeNotifier {
-  final String _token;
-  List<Product> _items = [];
+  final String token;
+  final String userId;
+  List<Product> items = [];
 
-  ProductList(this._token, this._items);
+  ProductList({
+    this.token = '',
+    this.items = const [],
+    this.userId = '',
+  });
 
   final _baseUrl = Constants.PRODUCT_BASE_URL;
 
   Future<void> addProduct(Product product) async {
     final response = await http.post(
-      Uri.parse('$_baseUrl/products.json?auth=$_token'),
+      Uri.parse('$_baseUrl/products.json?auth=$token'),
       body: jsonEncode(
         {
           "name": product.name,
@@ -29,35 +34,41 @@ class ProductList with ChangeNotifier {
     );
 
     final id = jsonDecode(response.body)['name'];
-    _items.add(
+    items.add(
       Product(
         id: id,
         name: product.name,
         description: product.description,
         price: product.price,
         imageUrl: product.imageUrl,
-        isFavorite: product.isFavorite,
       ),
     );
     notifyListeners();
   }
 
   Future<void> loadProducts() async {
-    _items.clear();
-    final response = await http.get(Uri.parse('$_baseUrl/products.json?auth=$_token'));
+    List<Product> _items = [];
+    final response = await http.get(Uri.parse('$_baseUrl/products.json?auth=$token'));
     if (response.body == 'null') return;
+    final favoriteResponse = await http.get(Uri.parse('$_baseUrl/userFavorites/$userId.json?auth=$token'));
     Map<String, dynamic> data = jsonDecode(response.body);
+    Map<String, dynamic> favoriteData = favoriteResponse.body == 'null' ? {} : jsonDecode(favoriteResponse.body);
     data.forEach(
-      (id, data) => _items.add(
-        Product(
-          id: id,
-          name: data['name'],
-          description: data['description'],
-          imageUrl: data['imageUrl'],
-          price: data['price'],
-        ),
-      ),
+      (id, data) {
+        final isFavorite = favoriteData[id] ?? false;
+        _items.add(
+          Product(
+            id: id,
+            name: data['name'],
+            description: data['description'],
+            imageUrl: data['imageUrl'],
+            price: data['price'],
+            isFavorite: isFavorite,
+          ),
+        );
+      },
     );
+    items = _items;
     notifyListeners();
   }
 
@@ -79,11 +90,11 @@ class ProductList with ChangeNotifier {
   }
 
   Future<void> updateProduct(Product product) async {
-    int index = _items.indexWhere((element) => element.id == product.id);
+    int index = items.indexWhere((element) => element.id == product.id);
 
     if (index >= 0) {
       await http.patch(
-        Uri.parse('$_baseUrl/products/${product.id}.json?auth=$_token'),
+        Uri.parse('$_baseUrl/products/${product.id}.json?auth=$token'),
         body: jsonEncode(
           {
             "name": product.name,
@@ -93,22 +104,22 @@ class ProductList with ChangeNotifier {
           },
         ),
       );
-      _items[index] = product;
+      items[index] = product;
       notifyListeners();
     }
   }
 
   Future<void> removeProduct(Product product) async {
-    int index = _items.indexWhere((element) => element.id == product.id);
+    int index = items.indexWhere((element) => element.id == product.id);
 
     if (index >= 0) {
-      final product = _items[index];
-      _items.remove(product);
+      final product = items[index];
+      items.remove(product);
       notifyListeners();
-      final response = await http.delete(Uri.parse('$_baseUrl/products/${product.id}.json?auth=$_token'));
+      final response = await http.delete(Uri.parse('$_baseUrl/products/${product.id}.json?auth=$token'));
 
       if (response.statusCode >= 400) {
-        _items.insert(index, product);
+        items.insert(index, product);
         notifyListeners();
         throw HttpException(
           message: 'Não foi possível excluir o produto',
@@ -118,9 +129,9 @@ class ProductList with ChangeNotifier {
     }
   }
 
-  List<Product> get items => [..._items];
-  int get itemsCount => _items.length;
-  List<Product> get favoriteitems => _items.where((element) => element.isFavorite).toList();
+  List<Product> get itemsList => [...items];
+  int get itemsCount => items.length;
+  List<Product> get favoriteitems => items.where((element) => element.isFavorite).toList();
 
   // bool _showFavoriteOnly = false;
 
