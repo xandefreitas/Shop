@@ -42,6 +42,14 @@ class Auth with ChangeNotifier {
     return _authenticate(email, password, 'signInWithPassword');
   }
 
+  void signOut() {
+    _token = null;
+    _email = null;
+    _userId = null;
+    _expireDate = null;
+    notifyListeners();
+  }
+
   bool get isAuth {
     final _isValid = _expireDate?.isAfter(DateTime.now()) ?? false;
     return _token != null && _isValid;
