@@ -37,9 +37,11 @@ class _OrdersPageState extends State<OrdersPage> {
               onRefresh: () => _refreshOrders(context),
               child: ListView.builder(
                 itemCount: orders.itemsCount,
-                itemBuilder: (ctx, i) => OrderWidget(
-                  order: orders.items[i],
-                ),
+                itemBuilder: (ctx, i) {
+                  return OrderWidget(
+                    order: orders.items[i],
+                  );
+                },
               ),
             ),
     );
