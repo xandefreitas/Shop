@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
@@ -9,6 +10,7 @@ class Auth with ChangeNotifier {
   String? _email;
   String? _userId;
   DateTime? _expireDate;
+  Timer? _signOutTimer;
 
   Future<void> _authenticate(String email, String password, String urlFragment) async {
     final url = 'https://identitytoolkit.googleapis.com/v1/accounts:$urlFragment?key=AIzaSyCACLHqrYJmNrlvyLSQF-WXbKF6mfwYcF8';
@@ -31,6 +33,7 @@ class Auth with ChangeNotifier {
       _userId = body['localId'];
       _expireDate = DateTime.now().add(Duration(seconds: int.parse(body['expiresIn'])));
     }
+    _autoSignOut();
     notifyListeners();
   }
 
@@ -47,7 +50,19 @@ class Auth with ChangeNotifier {
     _email = null;
     _userId = null;
     _expireDate = null;
+    _clearSignOutTimer();
     notifyListeners();
+  }
+
+  void _clearSignOutTimer() {
+    _signOutTimer?.cancel();
+    _signOutTimer = null;
+  }
+
+  void _autoSignOut() {
+    _clearSignOutTimer();
+    final timeToSignOut = _expireDate?.difference(DateTime.now()).inSeconds;
+    _signOutTimer = Timer(Duration(seconds: timeToSignOut ?? 0), signOut);
   }
 
   bool get isAuth {
