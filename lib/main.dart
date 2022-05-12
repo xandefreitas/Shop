@@ -33,8 +33,8 @@ class MyApp extends StatelessWidget {
           update: (ctx, auth, previous) {
             return ProductList(
               token: auth.token ?? '',
-              items: previous?.items ?? [],
               userId: auth.userId ?? '',
+              items: previous?.items ?? [],
             );
           },
         ),
@@ -43,6 +43,7 @@ class MyApp extends StatelessWidget {
           update: (ctx, auth, previous) {
             return OrderList(
               token: auth.token ?? '',
+              userId: auth.userId ?? '',
               items: previous?.items ?? [],
             );
           },
