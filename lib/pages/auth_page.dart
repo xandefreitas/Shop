@@ -23,38 +23,42 @@ class AuthPage extends StatelessWidget {
               ),
             ),
           ),
-          Container(
-            width: double.infinity,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  margin: EdgeInsets.only(bottom: 16),
-                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 72),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.deepOrange.shade900,
-                    boxShadow: [
-                      BoxShadow(
-                        blurRadius: 8,
-                        color: Colors.black26,
-                        offset: Offset(0, 2),
+          Center(
+            child: SingleChildScrollView(
+              child: SizedBox(
+                width: double.infinity,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(bottom: 16),
+                      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 72),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.deepOrange.shade900,
+                        boxShadow: [
+                          BoxShadow(
+                            blurRadius: 8,
+                            color: Colors.black26,
+                            offset: Offset(0, 2),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  transform: Matrix4.rotationZ(-8 * pi / 180)..translate(-10.0),
-                  child: Text(
-                    'Minha Loja',
-                    style: TextStyle(
-                      fontSize: 45,
-                      fontFamily: 'Anton',
-                      color: Theme.of(context).primaryTextTheme.headline6?.color,
+                      transform: Matrix4.rotationZ(-8 * pi / 180)..translate(-10.0),
+                      child: Text(
+                        'Minha Loja',
+                        style: TextStyle(
+                          fontSize: 45,
+                          fontFamily: 'Anton',
+                          color: Theme.of(context).primaryTextTheme.headline6?.color,
+                        ),
+                      ),
                     ),
-                  ),
+                    AuthForm(),
+                  ],
                 ),
-                AuthForm(),
-              ],
+              ),
             ),
           ),
         ],
