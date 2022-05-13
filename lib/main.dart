@@ -11,6 +11,7 @@ import 'package:flutter_shop/pages/product_form_page.dart';
 import 'package:flutter_shop/pages/products_page.dart';
 import 'package:flutter_shop/pages/products_overview_page.dart';
 import 'package:flutter_shop/utils/app,_routes.dart';
+import 'package:flutter_shop/utils/custom_route.dart';
 import 'package:provider/provider.dart';
 
 import 'pages/auth_or_home_page.dart';
@@ -65,6 +66,10 @@ class MyApp extends StatelessWidget {
                   color: Colors.black,
                 ),
               ),
+          pageTransitionsTheme: PageTransitionsTheme(builders: {
+            TargetPlatform.android: CustomPageTransitionBuilder(),
+            TargetPlatform.iOS: CustomPageTransitionBuilder(),
+          }),
         ),
         routes: {
           AppRoutes.AUTH_OR_HOME: (ctx) => AuthOrHomePage(),
