@@ -23,11 +23,14 @@ class ProductGridItem extends StatelessWidget {
             AppRoutes.PRODUCT_DETAIL,
             arguments: product,
           ),
-          child: FadeInImage(
-            placeholder: AssetImage('assets/images/shop_bag.png'),
-            placeholderFit: BoxFit.contain,
-            image: NetworkImage(product.imageUrl),
-            fit: BoxFit.cover,
+          child: Hero(
+            tag: product.id,
+            child: FadeInImage(
+              placeholder: AssetImage('assets/images/shop_bag.png'),
+              placeholderFit: BoxFit.contain,
+              image: NetworkImage(product.imageUrl),
+              fit: BoxFit.cover,
+            ),
           ),
         ),
         footer: GridTileBar(
