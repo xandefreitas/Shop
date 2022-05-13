@@ -16,12 +16,29 @@ class ProductDetailPage extends StatelessWidget {
             flexibleSpace: FlexibleSpaceBar(
               title: Text(product.name),
               centerTitle: true,
-              background: Hero(
-                tag: product.id,
-                child: Image.network(
-                  product.imageUrl,
-                  fit: BoxFit.cover,
-                ),
+              background: Stack(
+                children: [
+                  Hero(
+                    tag: product.id,
+                    child: Image.network(
+                      product.imageUrl,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.transparent,
+                          Colors.black26,
+                        ],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                      ),
+                    ),
+                  )
+                ],
+                fit: StackFit.expand,
               ),
             ),
           ),
