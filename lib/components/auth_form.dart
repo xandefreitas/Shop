@@ -36,7 +36,7 @@ class _AuthFormState extends State<AuthForm> with SingleTickerProviderStateMixin
     ).animate(
       CurvedAnimation(parent: _controller!, curve: Curves.linear),
     );
-    _heightAnimation?.addListener(() => setState(() {}));
+
     super.initState();
   }
 
@@ -54,10 +54,14 @@ class _AuthFormState extends State<AuthForm> with SingleTickerProviderStateMixin
         borderRadius: BorderRadius.circular(10),
       ),
       elevation: 8,
-      child: Container(
-        padding: EdgeInsets.all(16),
-        height: _heightAnimation?.value.height ?? (_isLogin ? 310 : 400),
-        width: deviceSize.width * 0.75,
+      child: AnimatedBuilder(
+        animation: _heightAnimation!,
+        builder: (ctx, child) => Container(
+          padding: EdgeInsets.all(16),
+          height: _heightAnimation?.value.height ?? (_isLogin ? 310 : 400),
+          width: deviceSize.width * 0.75,
+          child: child,
+        ),
         child: Form(
           key: _formKey,
           child: Column(
