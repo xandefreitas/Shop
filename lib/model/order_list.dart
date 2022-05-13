@@ -59,7 +59,7 @@ class OrderList with ChangeNotifier {
 
   Future<void> loadOrders() async {
     List<Order> _items = [];
-    final response = await http.get(Uri.parse('$_baseUrl/orders/$userId.json?auth=$token'));
+    final response = await http.get(Uri.parse('$_baseUrl/userOrders/$userId.json?auth=$token'));
     if (response.body == 'null') return;
     Map<String, dynamic> data = jsonDecode(response.body);
     data.forEach(
